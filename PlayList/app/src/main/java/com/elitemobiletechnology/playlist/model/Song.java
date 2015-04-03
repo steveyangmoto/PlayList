@@ -1,5 +1,7 @@
 package com.elitemobiletechnology.playlist.model;
 
+import org.json.JSONObject;
+
 /**
  * Created by SteveYang on 4/2/15.
  */
@@ -8,7 +10,7 @@ public class Song {
     private String artist;
     private String album;
 
-    public Song(String title,String artist,String album){
+    public Song(String title, String artist, String album) {
         this.title = title;
         this.artist = artist;
         this.album = album;
@@ -37,5 +39,6 @@ public class Song {
     public void setAlbum(String album) {
         this.album = album;
     }
+
 
 }

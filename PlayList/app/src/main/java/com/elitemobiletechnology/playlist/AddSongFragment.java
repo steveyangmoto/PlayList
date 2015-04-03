@@ -1,7 +1,9 @@
 package com.elitemobiletechnology.playlist;
 
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -19,6 +21,9 @@ import java.util.ArrayList;
  * Created by SteveYang on 4/2/15.
  */
 public class AddSongFragment extends Fragment{
+    private static final String TITLE_FIELD = "title_field";
+    private static final String ALBUM_FIELD = "album_field";
+    private static final String ARTIST_FIELD = "artist_field";
     Button saveButton;
     EditText title;
     EditText artist;
@@ -32,6 +37,7 @@ public class AddSongFragment extends Fragment{
         title = (EditText)view.findViewById(R.id.etTitle);
         artist = (EditText)view.findViewById(R.id.etArtist);
         album = (EditText)view.findViewById(R.id.etAlbum);
+        loadSavedFieldValuesFromPref();
         saveButton = (Button)view.findViewById(R.id.btSave);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,5 +74,25 @@ public class AddSongFragment extends Fragment{
             public void afterTextChanged(Editable s) {}
         });
         return view;
+    }
+
+    public void onStop(){
+        saveFieldValuesToPref();
+        super.onStop();
+    }
+    private void saveFieldValuesToPref(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(TITLE_FIELD, title.getText().toString());
+        editor.putString(ARTIST_FIELD,artist.getText().toString());
+        editor.putString(ALBUM_FIELD,album.getText().toString());
+        editor.commit();
+    }
+
+    private void loadSavedFieldValuesFromPref(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        artist.setText(prefs.getString(ARTIST_FIELD,""));
+        title.setText(prefs.getString(TITLE_FIELD,""));
+        album.setText(prefs.getString(ALBUM_FIELD,""));
     }
 }
